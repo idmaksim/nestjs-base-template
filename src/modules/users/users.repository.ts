@@ -1,59 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/common/services/prisma.service';
+import { DataSource, FindOptionsRelations, Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { AppDataSource } from 'src/db/data-source';
 import { UserCreateDto } from './dto/user-create.dto';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+export class UsersRepository extends Repository<User> {
+  constructor(dataSource: DataSource) {
+    super(User, dataSource.createEntityManager());
+  }
 
   async findOneById(id: string) {
-    return this.prisma.user.findUnique({
+    return this.findOne({
       where: { id },
-      include: this.getInclude(),
+      relations: this.getRelations(),
     });
   }
 
   async findOneByEmail(email: string) {
-    return this.prisma.user.findUnique({
+    return this.findOne({
       where: { email },
-      include: this.getInclude(),
-    });
-  }
-
-  async create(dto: UserCreateDto) {
-    return this.prisma.user.create({
-      data: {
-        ...dto,
-        role: {
-          connect: {
-            name: 'user',
-          },
-        },
-      },
-      include: this.getInclude(),
+      relations: this.getRelations(),
     });
   }
 
   async existsById(id: string) {
-    return !!(await this.prisma.user.findFirst({
-      where: { id },
-      select: {
-        id: true,
-      },
-    }));
+    return this.existsBy({ id });
   }
 
   async existsByEmail(email: string) {
-    return !!(await this.prisma.user.findFirst({
-      where: { email },
-      select: {
-        id: true,
-      },
-    }));
+    return this.existsBy({ email });
   }
 
-  private getInclude(): Prisma.UserInclude {
+  private getRelations(): FindOptionsRelations<User> {
     return {
       role: true,
     };

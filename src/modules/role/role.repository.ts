@@ -1,54 +1,100 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/common/services/prisma.service';
+import { DataSource, Repository } from 'typeorm';
+import { Role } from './entities/role.entity';
 import { RoleCreateDto } from './dto/role-create.dto';
-import { RoleUpdateDto } from './dto/role-update.dto';
+import { Permission } from '../permission/entities/permission.entity';
 
 @Injectable()
-export class RoleRepository {
-  constructor(private readonly prisma: PrismaService) {}
-
-  async delete(id: string) {
-    return this.prisma.role.delete({ where: { id } });
+export class RoleRepository extends Repository<Role> {
+  constructor(dataSource: DataSource) {
+    super(Role, dataSource.createEntityManager());
   }
 
-  async create(dto: RoleCreateDto) {
-    return this.prisma.role.create({
-      data: {
-        name: dto.name,
+  async findOneByName(name: string) {
+    return this.findOneBy({ name });
+  }
+
+  async createRole(dto: RoleCreateDto) {
+    const role = this.create({
+      ...dto,
+      rolePermissions: dto.permissions.map((permissionId) => ({
+        permission: { id: permissionId } as Permission,
+      })),
+    });
+
+    return this.save(role);
+  }
+
+  async findOneById(id: string) {
+    return this.findOne({
+      where: { id },
+      relations: {
         rolePermissions: {
-          createMany: {
-            data: dto.permissions.map((permission) => ({
-              permissionId: permission,
-            })),
-          },
+          permission: true,
         },
       },
     });
   }
 
-  async update(id: string, dto: RoleUpdateDto) {
-    return this.prisma.role.update({
-      where: { id },
-      data: dto,
-    });
-  }
-
-  async findOneById(id: string) {
-    return this.prisma.role.findUnique({
-      where: { id },
-    });
-  }
-
   async findAll() {
-    return this.prisma.role.findMany();
+    return this.find({
+      relations: {
+        rolePermissions: {
+          permission: true,
+        },
+      },
+    });
   }
 
   async existsById(id: string) {
-    return !!(await this.prisma.role.findFirst({
-      where: { id },
-      select: { id: true },
-    }));
+    return this.existsBy({ id });
   }
+
+  // async create(dto: RoleCreateDto) {
+  //   return this.save(dto);
+  // }
+
+  // async delete(id: string) {
+  //   return this.prisma.role.delete({ where: { id } });
+  // }
+
+  // async create(dto: RoleCreateDto) {
+  //   return this.prisma.role.create({
+  //     data: {
+  //       name: dto.name,
+  //       rolePermissions: {
+  //         createMany: {
+  //           data: dto.permissions.map((permission) => ({
+  //             permissionId: permission,
+  //           })),
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
+
+  // async update(id: string, dto: RoleUpdateDto) {
+  //   return this.prisma.role.update({
+  //     where: { id },
+  //     data: dto,
+  //   });
+  // }
+
+  // async findOneById(id: string) {
+  //   return this.prisma.role.findUnique({
+  //     where: { id },
+  //   });
+  // }
+
+  // async findAll() {
+  //   return this.prisma.role.findMany();
+  // }
+
+  // async existsById(id: string) {
+  //   return !!(await this.prisma.role.findFirst({
+  //     where: { id },
+  //     select: { id: true },
+  //   }));
 
   // create(
   //   roleDto: Prisma.RoleCreateInput,

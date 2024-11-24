@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "seed": "npx prisma db seed",
+    "seed": "typeorm-ts-node-commonjs migration:run -d ./src/db/seed-data-source.ts",
+    "seed:create": "typeorm-ts-node-commonjs migration:create ",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -18,7 +19,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "db:gen": "typeorm-ts-node-commonjs migration:generate -d ./src/db/data-source.ts",
+    "db:run": "typeorm-ts-node-commonjs migration:run -d ./src/db/data-source.ts",
+    "db:revert": "typeorm-ts-node-commonjs migration:revert -d ./src/db/data-source.ts",
+    "db:reset": "typeorm-ts-node-commonjs query \"DROP SCHEMA public CASCADE; CREATE SCHEMA public;\" -d ./src/db/data-source.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -35,6 +40,7 @@
     "nestjs-i18n": "^10.5.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
+    "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.20"
@@ -58,7 +64,7 @@
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3"
   },

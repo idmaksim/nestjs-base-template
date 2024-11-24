@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/common/services/prisma.service';
+import { DataSource, Repository } from 'typeorm';
+import { Permission } from './entities/permission.entity';
+import { AppDataSource } from 'src/db/data-source';
 
 @Injectable()
-export class PermissionRepository {
-  constructor(private readonly prisma: PrismaService) {}
+export class PermissionRepository extends Repository<Permission> {
+  constructor(dataSource: DataSource) {
+    super(Permission, dataSource.createEntityManager());
+  }
 
   async findAll() {
-    return this.prisma.permission.findMany();
+    return this.find();
   }
 
   async findOneById(id: string) {
-    return this.prisma.permission.findUnique({ where: { id } });
+    return this.findOneBy({ id });
   }
 
   async existsById(id: string): Promise<boolean> {
-    return !!(await this.prisma.permission.findUnique({
-      where: { id },
-      select: { id: true },
-    }));
+    return this.existsBy({ id });
   }
 
   async existsMany(uuids: string[]): Promise<boolean> {

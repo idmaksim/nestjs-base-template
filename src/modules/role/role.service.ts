@@ -13,6 +13,12 @@ export class RoleService {
     private readonly permissionService: PermissionService,
   ) {}
 
+  async findOneByName(name: string) {
+    const role = await this.roleRepository.findOneByName(name);
+    if (!role) throw new NotFoundException(this.i18n.t('errors.role.notFound'));
+    return role;
+  }
+
   async delete(id: string) {
     await this.ensureExistsById(id);
     return this.roleRepository.delete(id);
@@ -29,7 +35,7 @@ export class RoleService {
         this.permissionService.ensureExistsById(permission),
       ),
     );
-    return this.roleRepository.create(dto);
+    return this.roleRepository.createRole(dto);
   }
 
   async findOneById(id: string) {

@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/common/services/prisma.service';
+import { DataSource, Repository } from 'typeorm';
+import { RolePermission } from './entities/role-permission.entity';
 
 @Injectable()
-export class RolePermissionRepository {
-  constructor(private readonly prisma: PrismaService) {}
+export class RolePermissionRepository extends Repository<RolePermission> {
+  constructor(dataSource: DataSource) {
+    super(RolePermission, dataSource.createEntityManager());
+  }
 
   async findManyByRoleId(roleId: string) {
-    return this.prisma.rolePermission.findMany({
-      where: { roleId },
-      select: { permission: true },
+    return this.find({
+      where: { role: { id: roleId } },
+      relations: {
+        permission: true,
+      },
     });
   }
 }
