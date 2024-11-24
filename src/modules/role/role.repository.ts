@@ -3,6 +3,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Role } from './entities/role.entity';
 import { RoleCreateDto } from './dto/role-create.dto';
 import { Permission } from '../permission/entities/permission.entity';
+import { permission } from 'process';
 
 @Injectable()
 export class RoleRepository extends Repository<Role> {
@@ -15,14 +16,12 @@ export class RoleRepository extends Repository<Role> {
   }
 
   async createRole(dto: RoleCreateDto) {
-    const role = this.create({
-      ...dto,
-      rolePermissions: dto.permissions.map((permissionId) => ({
-        permission: { id: permissionId } as Permission,
+    return this.save({
+      name: dto.name,
+      rolePermissions: dto.permissions.map((id) => ({
+        permission: { id },
       })),
     });
-
-    return this.save(role);
   }
 
   async findOneById(id: string) {

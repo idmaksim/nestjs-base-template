@@ -1,5 +1,5 @@
 import { BaseEntity } from '../../../common/base/base.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { RolePermission } from '../../role-permission/entities/role-permission.entity';
 
@@ -11,6 +11,9 @@ export class Role extends BaseEntity {
   @OneToMany(() => User, (user) => user.role)
   users: User[];
 
-  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role, {
+    cascade: ['insert', 'update'],
+  })
+  @JoinTable()
   rolePermissions: RolePermission[];
 }

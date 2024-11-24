@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToOne } from 'typeorm';
 import { BaseEntity } from '../../../common/base/base.entity';
 import { Role } from '../../role/entities/role.entity';
 
@@ -16,7 +16,10 @@ export class User extends BaseEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToOne(() => Role, (role) => role.users)
+  @ManyToOne(() => Role, (role) => role.users, {
+    cascade: true,
+  })
   @JoinColumn({ name: 'roleId' })
+  @JoinTable()
   role: Role;
 }
