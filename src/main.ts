@@ -4,15 +4,15 @@ import { SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { LoggerInterceptor } from './common/interceptors/logger.interceptor';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(helmet()); // https://docs.nestjs.com/security/helmet
   app.setGlobalPrefix('api');
-
   app.useGlobalInterceptors(new LoggerInterceptor());
-
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-
   app.enableCors();
 
   const port = process.env.PORT || 3000;
