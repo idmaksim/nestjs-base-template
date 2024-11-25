@@ -1,4 +1,4 @@
-export enum RoleSummary {
+export enum RolesSummary {
   FIND_ALL = 'Getting all roles',
   FIND_ONE = 'Getting one role',
   CREATE = 'Creating a role',

@@ -17,7 +17,7 @@ import { ActiveGuard } from '../../common/guards/active.guard';
 import { PermissionGuard } from '../../common/guards/permission.guard';
 import { HasPermissions } from '../../common/decorators/permissions.decorator';
 import { PermissionEnum } from 'src/common/constants/permission.enum';
-import { RoleSummary } from 'src/common/swagger/summary/role.summary';
+import { RolesSummary } from 'src/common/swagger/summary/roles.summary';
 import { RoleCreateDto } from './dto/role-create.dto';
 import { RoleUpdateDto } from './dto/role-update.dto';
 
@@ -30,14 +30,14 @@ export class RoleController {
 
   @Post()
   @HasPermissions(PermissionEnum.RoleCreate)
-  @ApiOperation({ summary: RoleSummary.CREATE })
+  @ApiOperation({ summary: RolesSummary.CREATE })
   async create(@Body() roleDto: RoleCreateDto) {
     return this.roleService.create(roleDto);
   }
 
   @Get(':id')
   @HasPermissions(PermissionEnum.RoleGet)
-  @ApiOperation({ summary: RoleSummary.FIND_ONE })
+  @ApiOperation({ summary: RolesSummary.FIND_ONE })
   async findOneById(@Param('id') id: string) {
     return this.roleService.findOneById(id);
   }
@@ -48,14 +48,14 @@ export class RoleController {
     PermissionEnum.RolePermissionGetAll,
     PermissionEnum.PermissionGetAll,
   )
-  @ApiOperation({ summary: RoleSummary.FIND_ALL })
+  @ApiOperation({ summary: RolesSummary.FIND_ALL })
   async findAll() {
     return this.roleService.findAll();
   }
 
   @Patch(':id')
   @HasPermissions(PermissionEnum.RoleUpdate)
-  @ApiOperation({ summary: RoleSummary.UPDATE })
+  @ApiOperation({ summary: RolesSummary.UPDATE })
   async update(@Param('id') id: string, @Body() roleDto: RoleUpdateDto) {
     return this.roleService.update(id, roleDto);
   }
@@ -63,7 +63,7 @@ export class RoleController {
   @Delete(':id')
   @HasPermissions(PermissionEnum.RoleDelete)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: RoleSummary.DELETE })
+  @ApiOperation({ summary: RolesSummary.DELETE })
   async delete(@Param('id') id: string) {
     return this.roleService.delete(id);
   }

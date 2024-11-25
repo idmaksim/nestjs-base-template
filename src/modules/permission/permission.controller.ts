@@ -6,7 +6,7 @@ import { ActiveGuard } from '../../common/guards/active.guard';
 import { PermissionGuard } from '../../common/guards/permission.guard';
 import { HasPermissions } from '../../common/decorators/permissions.decorator';
 import { PermissionEnum } from 'src/common/constants/permission.enum';
-import { PermissionSummary } from 'src/common/swagger/summary/permission.summary';
+import { PermissionsSummary } from 'src/common/swagger/summary/permissions.summary';
 
 @ApiTags('Permissions')
 @ApiSecurity('bearer')
@@ -17,14 +17,14 @@ export class PermissionController {
 
   @Get()
   @HasPermissions(PermissionEnum.PermissionGetAll)
-  @ApiOperation({ summary: PermissionSummary.FIND_ALL })
+  @ApiOperation({ summary: PermissionsSummary.FIND_ALL })
   async findAll() {
     return this.permissionService.findAll();
   }
 
   @Get(':id')
   @HasPermissions(PermissionEnum.PermissionGet)
-  @ApiOperation({ summary: PermissionSummary.FIND_ONE })
+  @ApiOperation({ summary: PermissionsSummary.FIND_ONE })
   async findOne(@Param('id') id: string) {
     return this.permissionService.findOneById(id);
   }
