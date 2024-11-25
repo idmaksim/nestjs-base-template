@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, Min } from 'class-validator';
 
-export class PaginationRequestDto {
+export class PaginationDto {
   @ApiProperty({ default: 10 })
   @Min(0)
   @IsNumber()
