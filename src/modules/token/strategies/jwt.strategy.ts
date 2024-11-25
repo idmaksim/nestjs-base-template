@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from 'src/common/types/jwt-payload';
@@ -15,6 +15,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    return this.usersService.findOneById(payload.id, false);
+    try {
+      return await this.usersService.findOneById(payload.id, false);
+    } catch (error) {
+      throw new UnauthorizedException();
+    }
   }
 }
