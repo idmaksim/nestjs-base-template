@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PermissionRepository } from './permissions.repository';
 import { I18nService } from 'nestjs-i18n';
+import { CheckPermissionOptions } from './interfaces/service.interfaces';
 
 @Injectable()
 export class PermissionService {
@@ -33,11 +34,12 @@ export class PermissionService {
     return permission;
   }
 
-  async checkPermission(permission: string, roleId: string) {
-    const rolePermissions =
-      await this.permissionRepository.findManyByRoleId(roleId);
+  async checkPermission(options: CheckPermissionOptions) {
+    const rolePermissions = await this.permissionRepository.findManyByRoleId(
+      options.roleId,
+    );
     return rolePermissions.some(
-      (rolePermission) => rolePermission.name === permission,
+      (rolePermission) => rolePermission.name === options.permission,
     );
   }
 

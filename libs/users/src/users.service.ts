@@ -8,6 +8,10 @@ import { UserCreateDto } from './dto/user-create.dto';
 import { I18nService } from 'nestjs-i18n';
 import { PasswordService } from '@app/password';
 import { User, UserWithoutPassword } from '@app/common/types/user';
+import {
+  FindOneByEmailOptions,
+  FindOneByIdOptions,
+} from './interfaces/service.interfaces';
 
 @Injectable()
 export class UsersService {
@@ -29,20 +33,20 @@ export class UsersService {
     return this.deletePassword(user);
   }
 
-  async findOneByEmail(email: string, withPassword: boolean = true) {
-    const user = await this.usersRepository.findOneByEmail(email);
+  async findOneByEmail(options: FindOneByEmailOptions) {
+    const user = await this.usersRepository.findOneByEmail(options.email);
     if (!user) {
       throw new NotFoundException(this.i18n.t('errors.user.notFound'));
     }
-    return withPassword ? user : this.deletePassword(user);
+    return options.withPassword ? user : this.deletePassword(user);
   }
 
-  async findOneById(id: string, withPassword: boolean = true) {
-    const user = await this.usersRepository.findOneById(id);
+  async findOneById(options: FindOneByIdOptions) {
+    const user = await this.usersRepository.findOneById(options.id);
     if (!user) {
       throw new NotFoundException(this.i18n.t('errors.user.notFound'));
     }
-    return withPassword ? user : this.deletePassword(user);
+    return options.withPassword ? user : this.deletePassword(user);
   }
 
   async ensureExistsById(id: string) {

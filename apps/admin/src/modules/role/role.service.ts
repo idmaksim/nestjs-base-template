@@ -5,6 +5,7 @@ import { RoleRepository } from './role.repository';
 import { RoleCreateDto } from './dto/role-create.dto';
 import { RoleUpdateDto } from './dto/role-update.dto';
 import { PERMISSION_SERVICE } from '@app/common/constants/providers.const';
+import { RoleUpdateOptions } from './interfaces/service.interfaces';
 
 @Injectable()
 export class RoleService {
@@ -20,9 +21,9 @@ export class RoleService {
     return this.roleRepository.delete(id);
   }
 
-  async update(id: string, dto: RoleUpdateDto) {
-    await this.ensureExistsById(id);
-    return this.roleRepository.update(id, dto);
+  async update(options: RoleUpdateOptions) {
+    await this.ensureExistsById(options.id);
+    return this.roleRepository.update(options);
   }
 
   async create(dto: RoleCreateDto) {

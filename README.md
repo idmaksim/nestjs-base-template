@@ -20,6 +20,7 @@ This template is designed to provide you with a solid foundation for building sc
 
   - **Prisma**: Available in the `master` branch for a modern and intuitive ORM experience.
   - **TypeORM** (_soon_): Available in the `typeorm` branch for those who prefer a more traditional ORM approach.
+  - **MongoDB Support**: Available in the `mongodb` branch for those who want to use MongoDB with Prisma.
 
 - **🔑 JWT Authentication**: Authorization is handled using **JWT** and **passport-jwt**, ensuring secure and stateless authentication.
 

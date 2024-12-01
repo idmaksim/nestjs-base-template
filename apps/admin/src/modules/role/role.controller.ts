@@ -59,8 +59,11 @@ export class RoleController {
   @Patch(':id')
   @HasPermissions(PermissionEnum.RoleUpdate)
   @ApiOperation({ summary: RolesSummary.UPDATE })
-  async update(@Param('id') id: string, @Body() roleDto: RoleUpdateDto) {
-    return this.roleService.update(id, roleDto);
+  async update(@Param('id') id: string, @Body() dto: RoleUpdateDto) {
+    return this.roleService.update({
+      id,
+      dto,
+    });
   }
 
   @Delete(':id')

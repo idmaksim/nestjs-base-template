@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/common/services/prisma.service';
 import { RoleCreateDto } from './dto/role-create.dto';
 import { RoleUpdateDto } from './dto/role-update.dto';
+import { RoleUpdateOptions } from './interfaces/repository.interfaces';
 
 @Injectable()
 export class RoleRepository {
@@ -26,10 +27,10 @@ export class RoleRepository {
     });
   }
 
-  async update(id: string, dto: RoleUpdateDto) {
+  async update(options: RoleUpdateOptions) {
     return this.prisma.role.update({
-      where: { id },
-      data: dto,
+      where: { id: options.id },
+      data: options.dto,
     });
   }
 

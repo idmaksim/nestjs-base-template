@@ -28,12 +28,15 @@ export class AuthService {
   }
 
   async signIn(dto: SignInDto) {
-    const user = (await this.usersService.findOneByEmail(
-      dto.email,
-      true,
-    )) as User;
+    const user = (await this.usersService.findOneByEmail({
+      email: dto.email,
+      withPassword: true,
+    })) as User;
     if (
-      !(await this.passwordService.comparePassword(dto.password, user.password))
+      !(await this.passwordService.comparePassword({
+        password: dto.password,
+        hashedPassword: user.password,
+      }))
     ) {
       throw new NotFoundException(this.i18n.t('errors.user.notFound'));
     }

@@ -41,11 +41,11 @@ export class PermissionGuard implements CanActivate {
 
   private async hasPermissions(
     requiredPermissions: PermissionEnum[],
-    userId: string,
+    roleId: string,
   ): Promise<boolean> {
     const permissionsCheckResults = await Promise.all(
       requiredPermissions.map((permission) =>
-        this.permissionService.checkPermission(permission, userId),
+        this.permissionService.checkPermission({ permission, roleId }),
       ),
     );
     return permissionsCheckResults.every((result) => result);
