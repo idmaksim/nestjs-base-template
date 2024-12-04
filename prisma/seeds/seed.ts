@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { seedPermission } from './permission.seed';
 import { seedRole } from './role.seed';
+import { seedUser } from './user.seed';
 
 const prisma = new PrismaClient();
 
@@ -10,6 +11,9 @@ async function main() {
 
   await seedRole(prisma);
   console.log('[+] Roles created');
+
+  await seedUser(prisma);
+  console.log('[+] User created');
 
   console.log('[+] All set');
 }
