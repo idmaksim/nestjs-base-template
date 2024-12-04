@@ -1,6 +1,5 @@
 import { Controller, Get, Param, UseGuards, Inject } from '@nestjs/common';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import { PermissionService } from './permissions.service';
 import { ActiveGuard } from '@app/common/guards/active.guard';
 import { JwtAuthGuard } from '@app/common/guards/auth.guard';
 import { PermissionGuard } from '@app/common/guards/permission.guard';
@@ -8,6 +7,7 @@ import { PermissionEnum } from '@app/common/constants/permission.enum';
 import { PermissionsSummary } from '@app/common/swagger/summary/permissions.summary';
 import { HasPermissions } from '@app/common/decorators/permissions.decorator';
 import { PERMISSION_SERVICE } from '@app/common/constants/providers.const';
+import { PermissionService } from '@app/permissions';
 
 @ApiTags('Permissions')
 @ApiSecurity('bearer')

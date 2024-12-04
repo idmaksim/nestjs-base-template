@@ -6,6 +6,7 @@ import { AcceptLanguageResolver } from 'nestjs-i18n';
 import config from '../../config/config';
 import { TokenModule } from '@app/token';
 import { RoleModule } from '../role/role.module';
+import { PermissionsAdminModule } from '../permissions-admin/permissions-admin.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { RoleModule } from '../role/role.module';
     PermissionModule,
     TokenModule,
     RoleModule,
+    PermissionsAdminModule,
   ],
 })
 export class AppModule {}
