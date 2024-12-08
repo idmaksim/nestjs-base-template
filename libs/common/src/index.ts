@@ -14,9 +14,6 @@ export * from './interceptors/logger.interceptor';
 
 export * from './middlewares/logger.middleware';
 
-export * from './prisma/pagination.base';
-export * from './prisma/utils';
-
 export * from './services/prisma.service';
 
 export * from './types/jwt-payload';
