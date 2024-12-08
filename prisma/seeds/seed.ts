@@ -6,6 +6,13 @@ import { seedUser } from './user.seed';
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.$transaction([
+    prisma.rolePermission.deleteMany(),
+    prisma.user.deleteMany(),
+    prisma.permission.deleteMany(),
+    prisma.role.deleteMany(),
+  ]);
+
   await seedPermission(prisma);
   console.log('[+] Permissions created');
 
