@@ -19,7 +19,7 @@ This template is designed to provide you with a solid foundation for building sc
 - **🔀 Dual ORM Support**:
 
   - **Prisma**: Available in the `master` branch for a modern and intuitive ORM experience.
-  - **TypeORM** (_soon_): Available in the `typeorm` branch for those who prefer a more traditional ORM approach.
+  - **TypeORM** (need updates): Available in the `typeorm` branch for those who prefer a more traditional ORM approach.
 
 - **🔑 JWT Authentication**: Authorization is handled using **JWT** and **passport-jwt**, ensuring secure and stateless authentication.
 
