@@ -6,6 +6,7 @@ import { RoleUpdateOptions } from './interfaces/repository.interfaces';
 import { RoleSearchDto } from './dto/role-search.dto';
 import { getPagination, mapStringToSearch } from '@app/prisma';
 import { mapSortToPrisma } from '@app/prisma/sort.base';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class RoleRepository {
@@ -54,6 +55,7 @@ export class RoleRepository {
   async findOneById(id: string) {
     return this.prisma.role.findUnique({
       where: { id },
+      include: this.getInclude(),
     });
   }
 
@@ -61,6 +63,7 @@ export class RoleRepository {
     return this.prisma.role.findMany({
       where: mapStringToSearch(dto.filters),
       orderBy: mapSortToPrisma(dto.sorts),
+      include: this.getInclude(),
       ...getPagination(dto.pagination),
     });
   }
@@ -76,5 +79,15 @@ export class RoleRepository {
       where: { id },
       select: { id: true },
     }));
+  }
+
+  private getInclude(): Prisma.RoleInclude {
+    return {
+      rolePermissions: {
+        include: {
+          permission: true,
+        },
+      },
+    };
   }
 }
