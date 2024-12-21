@@ -18,11 +18,7 @@ export class PermissionService {
       this.permissionRepository.search(dto),
       this.permissionRepository.count(dto),
     ]);
-    if (!permissions.length) {
-      throw new NotFoundException(
-        this.i18n.t('errors.permission.notFoundMany'),
-      );
-    }
+
     return {
       data: permissions,
       count,

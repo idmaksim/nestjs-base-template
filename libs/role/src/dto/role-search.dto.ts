@@ -14,7 +14,7 @@ export class RoleSortDto {
 
 export class RoleFiltersDto extends PartialType(RoleBaseDto) {}
 
-export class RoleSearchDto extends SearchBaseDto<RoleFiltersDto, RoleSortDto> {
+export class RoleSearchDto extends SearchBaseDto {
   @ApiProperty()
   @Type(() => RoleFiltersDto)
   filters?: RoleFiltersDto;

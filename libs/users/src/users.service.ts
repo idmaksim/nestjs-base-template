@@ -30,7 +30,7 @@ export class UsersService {
       ...dto,
       password: hashedPassword,
     });
-    return this.deletePassword(user);
+    return user;
   }
 
   async findOneByEmail(options: FindOneByEmailOptions) {
@@ -38,7 +38,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(this.i18n.t('errors.user.notFound'));
     }
-    return options.withPassword ? user : this.deletePassword(user);
+    return user;
   }
 
   async findOneById(options: FindOneByIdOptions) {
@@ -46,7 +46,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(this.i18n.t('errors.user.notFound'));
     }
-    return options.withPassword ? user : this.deletePassword(user);
+    return user;
   }
 
   async ensureExistsById(id: string) {
@@ -63,10 +63,5 @@ export class UsersService {
         this.i18n.translate('errors.user.alreadyExists'),
       );
     }
-  }
-
-  private async deletePassword(user: User): Promise<UserWithoutPassword> {
-    delete user.password;
-    return user;
   }
 }

@@ -19,7 +19,7 @@ import { ApolloDriver } from '@nestjs/apollo';
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       useFactory: () => ({
-        autoSchemaFile: 'schema.gql',
+        autoSchemaFile: 'main-schema.gql',
         context: ({ req, res }) => ({ req, res }),
         playground: true,
       }),

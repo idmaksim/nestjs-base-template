@@ -3,6 +3,7 @@ import { PrismaService } from '@app/common/services/prisma.service';
 import { PermissionSearchDto } from './dto/permission-search.dto';
 import { getPagination, mapStringToSearch } from '@app/prisma';
 import { mapSortToPrisma } from '@app/prisma/sort.base';
+import { Prisma } from '@prisma/client';
 @Injectable()
 export class PermissionRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -15,6 +16,7 @@ export class PermissionRepository {
     return this.prisma.permission.findMany({
       where: mapStringToSearch(dto.filters),
       orderBy: mapSortToPrisma(dto.sorts),
+      include: this.getInclude(),
       ...getPagination(dto.pagination),
     });
   }
@@ -28,6 +30,7 @@ export class PermissionRepository {
   async findManyByRoleId(roleId: string) {
     return this.prisma.permission.findMany({
       where: { rolePermissions: { some: { roleId } } },
+      include: this.getInclude(),
     });
   }
 
@@ -43,5 +46,15 @@ export class PermissionRepository {
       ids.map((id) => this.existsById(id)),
     );
     return permissionExistsResults.every((exists) => exists);
+  }
+
+  private getInclude(): Prisma.PermissionInclude {
+    return {
+      rolePermissions: {
+        include: {
+          role: true,
+        },
+      },
+    };
   }
 }

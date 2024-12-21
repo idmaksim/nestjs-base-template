@@ -11,15 +11,18 @@ import { User } from '../types/user';
 import { PermissionEnum } from '../constants/permission.enum';
 import { PermissionService } from 'libs/permissions/src';
 import { PERMISSION_SERVICE } from '../constants/providers.const';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
 @Injectable()
-export class PermissionGuard implements CanActivate {
+export abstract class BasePermissionGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     @Inject(PERMISSION_SERVICE)
     private readonly permissionService: PermissionService,
     private readonly i18n: I18nService,
   ) {}
+
+  abstract getRequest(context: ExecutionContext);
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredPermissions = this.reflector.getAllAndOverride<
@@ -28,7 +31,7 @@ export class PermissionGuard implements CanActivate {
     if (!requiredPermissions || requiredPermissions.length === 0) {
       return true;
     }
-    const { user }: { user: User } = context.switchToHttp().getRequest();
+    const { user }: { user: User } = await this.getRequest(context);
     const hasAllPermissions = await this.hasPermissions(
       requiredPermissions,
       user.roleId,
@@ -49,5 +52,20 @@ export class PermissionGuard implements CanActivate {
       ),
     );
     return permissionsCheckResults.every((result) => result);
+  }
+}
+
+@Injectable()
+export class PermissionGuard extends BasePermissionGuard {
+  async getRequest(context: ExecutionContext): Promise<Request> {
+    return context.switchToHttp().getRequest();
+  }
+}
+
+@Injectable()
+export class PermissionGuardGraphql extends BasePermissionGuard {
+  async getRequest(context: ExecutionContext): Promise<Request> {
+    const ctx = GqlExecutionContext.create(context);
+    return ctx.getContext().req;
   }
 }

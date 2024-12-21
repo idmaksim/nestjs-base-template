@@ -2,7 +2,15 @@ import { Prisma } from '@prisma/client';
 
 export type User = Prisma.UserGetPayload<{
   include: {
-    role: true;
+    role: {
+      include: {
+        rolePermissions: {
+          include: {
+            permission: true;
+          };
+        };
+      };
+    };
   };
 }>;
 
