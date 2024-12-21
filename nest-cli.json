@@ -81,6 +81,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/prisma/tsconfig.lib.json"
       }
+    },
+    "role": {
+      "type": "library",
+      "root": "libs/role",
+      "entryFile": "index",
+      "sourceRoot": "libs/role/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/role/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -53,6 +53,12 @@
       ],
       "@app/prisma/*": [
         "libs/prisma/src/*"
+      ],
+      "@app/role": [
+        "libs/role/src"
+      ],
+      "@app/role/*": [
+        "libs/role/src/*"
       ]
     }
   }

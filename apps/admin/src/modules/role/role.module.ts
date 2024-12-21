@@ -1,15 +1,11 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { RoleService } from './role.service';
+import { Module } from '@nestjs/common';
 import { RoleController } from './role.controller';
 import { PermissionModule } from '@app/permissions';
-import { RoleRepository } from './role.repository';
 import { UsersModule } from '@app/users';
-import { PrismaService } from '@app/common/services/prisma.service';
-
+import { RoleModule as LibRoleModule } from '@app/role';
 @Module({
   controllers: [RoleController],
-  providers: [RoleService, PrismaService, RoleRepository],
-  exports: [RoleService],
-  imports: [PermissionModule, UsersModule],
+  providers: [],
+  imports: [PermissionModule, UsersModule, LibRoleModule],
 })
 export class RoleModule {}

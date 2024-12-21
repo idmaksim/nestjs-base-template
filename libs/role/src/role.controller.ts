@@ -10,21 +10,22 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { RoleService } from './role.service';
 import {
   ApiCreatedResponse,
   ApiOperation,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+import { RoleCreateDto } from './dto/role-create.dto';
+import { RoleUpdateDto } from './dto/role-update.dto';
 import { HasPermissions } from '@app/common';
 import { PermissionEnum } from '@app/common';
 import { ActiveGuard, JwtAuthGuard } from '@app/common';
 import { PermissionGuard } from '@app/common';
 import { RolesSummary } from '@app/common/swagger/summary/roles.summary';
-import { RoleSearchDto } from '@app/role/dto/role-search.dto';
-import { RoleService } from '@app/role';
-import { RoleCreateDto } from '@app/role/dto/role-create.dto';
-import { RoleUpdateDto } from '@app/role/dto/role-update.dto';
+import { RoleSearchDto } from './dto/role-search.dto';
+
 @ApiSecurity('bearer')
 @UseGuards(JwtAuthGuard, ActiveGuard, PermissionGuard)
 @Controller('roles')
