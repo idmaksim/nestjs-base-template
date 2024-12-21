@@ -8,6 +8,9 @@ import { PermissionModule } from 'libs/permissions/src';
 import { PermissionGuard } from '@app/common/guards/permission.guard';
 import { TokenModule } from '@app/token';
 import { UsersModule } from '../users/users.module';
+import { ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -26,6 +29,13 @@ import { UsersModule } from '../users/users.module';
         watch: true,
       },
       resolvers: [AcceptLanguageResolver],
+    }),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useFactory: () => ({
+        autoSchemaFile: 'schema.gql',
+        context: ({ req, res }) => ({ req, res }),
+      }),
     }),
     AuthModule,
     TokenModule,
