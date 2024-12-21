@@ -2,11 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type RoleModel {
+type PermissionModel {
   createdAt: DateTime!
   updatedAt: DateTime!
   id: String!
   name: String!
+  title: String!
   rolePermissions: [RolePermissionModel!]!
 }
 
@@ -22,12 +23,11 @@ type RolePermissionModel {
   permission: PermissionModel!
 }
 
-type PermissionModel {
+type RoleModel {
   createdAt: DateTime!
   updatedAt: DateTime!
   id: String!
   name: String!
-  title: String!
   rolePermissions: [RolePermissionModel!]!
 }
 
@@ -37,6 +37,7 @@ type SearchPermissionsResponseDto {
 }
 
 type Query {
+  role(id: String!): RoleModel!
   permissions(search: PermissionSearchDto!): SearchPermissionsResponseDto!
 }
 
