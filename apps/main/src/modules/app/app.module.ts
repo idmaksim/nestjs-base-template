@@ -4,8 +4,6 @@ import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 import config from '../../config/config';
 import { AuthModule } from '../auth/auth.module';
 import { LoggerMiddleware } from '@app/common/middlewares/logger.middleware';
-import { PermissionModule } from 'libs/permissions/src';
-import { PermissionGuard } from '@app/common/guards/permission.guard';
 import { TokenModule } from '@app/token';
 import { UsersModule } from '../users/users.module';
 import { ApolloDriverConfig } from '@nestjs/apollo';
@@ -18,6 +16,14 @@ import { ApolloDriver } from '@nestjs/apollo';
       isGlobal: true,
       load: [config],
     }),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useFactory: () => ({
+        autoSchemaFile: 'schema.gql',
+        context: ({ req, res }) => ({ req, res }),
+        playground: true,
+      }),
+    }),
     I18nModule.forRoot({
       fallbackLanguage: 'en',
       fallbacks: {
@@ -26,16 +32,8 @@ import { ApolloDriver } from '@nestjs/apollo';
       },
       loaderOptions: {
         path: `./libs/i18n/`,
-        watch: true,
       },
       resolvers: [AcceptLanguageResolver],
-    }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      useFactory: () => ({
-        autoSchemaFile: 'schema.gql',
-        context: ({ req, res }) => ({ req, res }),
-      }),
     }),
     AuthModule,
     TokenModule,

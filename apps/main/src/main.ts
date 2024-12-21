@@ -12,7 +12,14 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(helmet()); // https://docs.nestjs.com/security/helmet
   app.useGlobalInterceptors(new LoggerInterceptor());
-  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      transformOptions: { enableImplicitConversion: true },
+      validateCustomDecorators: true,
+    }),
+  );
   app.enableCors();
 
   const port = process.env.PORT || 3000;

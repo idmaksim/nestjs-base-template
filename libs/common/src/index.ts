@@ -3,6 +3,7 @@ export * from './base/pagination.dto';
 export * from './constants/permission.enum';
 
 export * from './decorators/decode-user.decorator';
+
 export * from './decorators/permissions.decorator';
 
 export * from './guards/active.guard';
