@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { PermissionController } from './permissions.controller';
 import {
   PermissionModule as LibPermissionModule,
   PermissionModule,
