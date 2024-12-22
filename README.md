@@ -22,13 +22,26 @@ This template is designed to provide you with a solid foundation for building sc
   - **TypeORM** (need updates) : Available in the `typeorm` branch for those who prefer a more traditional ORM approach.
   - **MongoDB Support**: Just change db provider in `prisma/schema.prisma` and enjoy MongoDb :))
 
+
+- **🌐 API Support**:
+  - **REST API**: Available in `master` branch for classic REST approach
+  - **GraphQL API**: Available in `graphql` branch with full GraphQL support
+  - **Hybrid Mode**: Ability to use both REST and GraphQL simultaneously
+
+- **📊 GraphQL Features** (in `graphql` branch):
+  - **Code-First Approach**: Automatic schema generation from TypeScript classes
+  - **Type Safety**: Full TypeScript support with automatic type generation
+  - **Subscriptions**: Real-time support via WebSocket
+  - **Playground**: Built-in GraphQL IDE for query testing
+  - **Schema Stitching**: Ability to combine multiple GraphQL schemas
+
 - **🔑 JWT Authentication**: Authorization is handled using **JWT** and **passport-jwt**, ensuring secure and stateless authentication.
 
 - **🛡️ Role-Based Access Control**: Effortlessly manage user roles and permissions to ensure the right access levels.
 
 - **🌐 Internationalization Support**: Seamlessly support multiple languages and locales to reach a global audience.
 
-- **📜 Swagger Documentation**: Automatically generated API documentation to help you and your team understand and use the API effectively.
+- **📜 Swagger | GraphQL Documentation**: Automatically generated API documentation to help you and your team understand and use the API effectively.
 
 - **🛠️ Modular Architecture**: Clean and organized structure to facilitate scalability and maintainability.
 
@@ -40,9 +53,11 @@ This template is designed to provide you with a solid foundation for building sc
 
 This template is structured to help you quickly start developing your NestJS application. Here's how you can make the most of it:
 
-- **Modules**: Add new features by creating modules in the `src/modules` directory. Each module should encapsulate related functionality, including controllers, services, and repositories.
+- **Apps**: Add new apps in the `apps` directory. Each app should encapsulate related functionality, including modules, common types, guards, interceptors, etc.
 
-- **Controllers**: Define your API endpoints in controllers. Place them in the respective module's directory under `src/modules`.
+- **Modules**: Add new features by creating modules in the `app-name/src/modules` directory. Each module should encapsulate related functionality, including controllers, services, and repositories.
+
+- **Controllers**: Define your API endpoints in controllers. Place them in the respective module's directory under `app-name/src/modules`.
 
 - **Services**: Implement your business logic in services. These should also be placed within the module's directory.
 
@@ -50,13 +65,13 @@ This template is structured to help you quickly start developing your NestJS app
 
 - **DTOs (Data Transfer Objects)**: Define DTOs in the `dto` directory within each module to validate and type-check incoming data.
 
-- **Guards and Interceptors**: Implement guards and interceptors in the `src/common` directory to handle cross-cutting concerns like authentication and logging.
+- **Guards and Interceptors**: Implement guards and interceptors in the `libs/common/src/guards` directory to handle cross-cutting concerns like authentication and logging.
 
-- **Configuration**: Manage application configuration using the `ConfigModule` in `src/config`. Environment variables can be defined in `.env` files.
+- **Configuration**: Manage application configuration using the `ConfigModule` in `apps/app-name/src/config`. Environment variables can be defined in `.env` files.
 
-- **Internationalization**: Add translations in the `src/i18n` directory to support multiple languages.
+- **Internationalization**: Add translations in the `libs/i18n` directory to support multiple languages.
 
-- **Swagger Documentation**: Automatically generate API documentation by annotating your controllers and DTOs with Swagger decorators.
+- **Swagger | GraphQL Documentation**: Automatically generate API documentation by annotating your controllers and DTOs with Swagger decorators.
 
 ---
 
@@ -69,9 +84,12 @@ This template is structured to help you quickly start developing your NestJS app
 
 - **libs/** - Shared libraries
   - **common/** - Common utilities and types
+  - **i18n/** - Internationalization module
   - **users/** - Users module
-  - **permissions/** - Permissions module
   - **token/** - JWT tokens module
+  - **permissions/** - Permissions module
+  - **role/** - Role module
+  - **prisma/** - Prisma ORM module
   - **password/** - Password hashing module
 
 ---
@@ -123,8 +141,11 @@ To get started with this template, follow these steps:
 
 7. **Access Swagger Documentation**: Visit `http://localhost:<3000/3001>/api` to view the automatically generated Swagger documentation.
 
-8. **Explore and Customize**: Explore the codebase, add new features, and customize the template to fit your project needs.
+8. **GraphQL Playground**: Visit `http://localhost:<3000/3001>/graphql` to view the GraphQL playground.
+
+9. **Explore and Customize**: Explore the codebase, add new features, and customize the template to fit your project needs.
 
 ---
 
 Explore these features and more to build a powerful and flexible application with NestJS! 🚀
+
