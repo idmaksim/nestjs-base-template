@@ -2,11 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthResponseDto {
-  accessToken: String!
-  refreshToken: String!
-}
-
 type PermissionModel {
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -44,25 +39,5 @@ type UserModel {
 }
 
 type Query {
-  signIn(dto: SignInDto!): AuthResponseDto!
-  refresh(dto: RefreshDto!): AuthResponseDto!
   me: UserModel!
-}
-
-input SignInDto {
-  email: String!
-  password: String!
-}
-
-input RefreshDto {
-  refreshToken: String!
-}
-
-type Mutation {
-  signUp(dto: SignUpDto!): AuthResponseDto!
-}
-
-input SignUpDto {
-  email: String!
-  password: String!
 }

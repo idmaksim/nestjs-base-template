@@ -6,6 +6,7 @@ import { TokenService } from '@app/token';
 import { UsersService } from '@app/users';
 import { PasswordService } from '@app/password';
 import { User } from '@app/common/types/user';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,15 @@ export class AuthService {
     private readonly passwordService: PasswordService,
     private readonly i18n: I18nService,
   ) {}
+
+  async setTokenCookie(res: Response, token: string) {
+    res.cookie('refreshToken', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+  }
 
   async signUp(dto: SignUpDto) {
     const user = await this.usersService.create(dto);
