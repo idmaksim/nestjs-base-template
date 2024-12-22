@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsSemVer, IsString } from 'class-validator';
 import { RoleBaseDto } from './role-base.dto';
-import { InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class RoleCreateDto extends RoleBaseDto {
+  @Field(() => [String])
   @IsArray()
   @IsString({ each: true })
   permissions: string[];

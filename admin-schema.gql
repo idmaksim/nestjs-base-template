@@ -31,6 +31,11 @@ type RoleModel {
   rolePermissions: [RolePermissionModel!]!
 }
 
+type SearchRolesResponseDto {
+  data: [RoleModel!]!
+  count: Float!
+}
+
 type SearchPermissionsResponseDto {
   data: [PermissionModel!]!
   count: Float!
@@ -38,18 +43,38 @@ type SearchPermissionsResponseDto {
 
 type Query {
   role(id: String!): RoleModel!
+  roles(search: RoleSearchDto!): SearchRolesResponseDto!
   permissions(search: PermissionSearchDto!): SearchPermissionsResponseDto!
+}
+
+input RoleSearchDto {
+  pagination: PaginationDto
+  filters: RoleFiltersDto
+  sorts: RoleSortDto
+}
+
+input PaginationDto {
+  count: Int!
+  page: Int!
+}
+
+input RoleFiltersDto {
+  name: String!
+}
+
+input RoleSortDto {
+  name: SortTypes
+}
+
+enum SortTypes {
+  ASC
+  DESC
 }
 
 input PermissionSearchDto {
   pagination: PaginationDto
   filters: PermissionFiltersDto
   sorts: PermissionSortDto
-}
-
-input PaginationDto {
-  count: Int!
-  page: Int!
 }
 
 input PermissionFiltersDto {
@@ -61,7 +86,18 @@ input PermissionSortDto {
   title: SortTypes!
 }
 
-enum SortTypes {
-  ASC
-  DESC
+type Mutation {
+  createRole(input: RoleCreateDto!): RoleModel!
+  updateRole(id: String!, input: RoleUpdateDto!): RoleModel!
+  deleteRole(id: String!): RoleModel!
+}
+
+input RoleCreateDto {
+  name: String!
+  permissions: [String!]!
+}
+
+input RoleUpdateDto {
+  name: String!
+  permissions: [String!]!
 }

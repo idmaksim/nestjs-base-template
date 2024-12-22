@@ -16,6 +16,12 @@ export class RoleRepository {
     return this.prisma.role.delete({ where: { id } });
   }
 
+  async existsByName(name: string, id?: string) {
+    return !!(await this.prisma.role.findFirst({
+      where: { name, id: { not: id } },
+    }));
+  }
+
   async create(dto: RoleCreateDto) {
     return this.prisma.role.create({
       data: {

@@ -15,7 +15,7 @@ export class RoleSortDto {
 }
 
 @InputType()
-export class RoleFiltersDto extends PartialType(RoleBaseDto) {}
+export class RoleFiltersDto extends RoleBaseDto {}
 
 @InputType()
 export class RoleSearchDto extends SearchBaseDto {

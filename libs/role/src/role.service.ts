@@ -1,9 +1,13 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { PermissionService } from '@app/permissions';
 import { RoleRepository } from './role.repository';
 import { RoleCreateDto } from './dto/role-create.dto';
-import { RoleUpdateDto } from './dto/role-update.dto';
 import { PERMISSION_SERVICE } from '@app/common/constants/providers.const';
 import { RoleUpdateOptions } from './interfaces/service.interfaces';
 import { RoleSearchDto } from './dto/role-search.dto';
@@ -27,9 +31,7 @@ export class RoleService {
       this.roleRepository.search(dto),
       this.roleRepository.count(dto),
     ]);
-    if (!roles.length) {
-      throw new NotFoundException(this.i18n.t('errors.role.notFoundMany'));
-    }
+
     return {
       data: roles,
       count,
@@ -45,6 +47,7 @@ export class RoleService {
       );
     }
     await this.ensureExistsById(options.id);
+    await this.ensureExistsByName(options.dto.name, options.id);
     return this.roleRepository.update(options);
   }
 
@@ -56,6 +59,7 @@ export class RoleService {
         ),
       );
     }
+    await this.ensureExistsByName(dto.name);
     return this.roleRepository.create(dto);
   }
 
@@ -71,6 +75,13 @@ export class RoleService {
     const exists = await this.roleRepository.existsById(id);
     if (!exists) {
       throw new NotFoundException(this.i18n.t('errors.role.notFound'));
+    }
+  }
+
+  async ensureExistsByName(name: string, id?: string) {
+    const exists = await this.roleRepository.existsByName(name, id);
+    if (exists) {
+      throw new ConflictException(this.i18n.t('errors.role.alreadyExists'));
     }
   }
 }
