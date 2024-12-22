@@ -22,7 +22,7 @@ export class AuthService {
   async setTokenCookie(res: Response, token: string) {
     res.cookie('refreshToken', token, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: 'strict',
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
