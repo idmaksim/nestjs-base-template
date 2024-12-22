@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { InputType, Field } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
 
+@InputType()
 export class RefreshDto {
-  @ApiProperty()
+  @Field(() => String)
   @IsString()
   refreshToken: string;
 }

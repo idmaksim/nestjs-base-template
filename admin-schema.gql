@@ -87,8 +87,8 @@ input PermissionSortDto {
 }
 
 type Mutation {
-  createRole(input: RoleCreateDto!): RoleModel!
-  updateRole(id: String!, input: RoleUpdateDto!): RoleModel!
+  createRole(dto: RoleCreateDto!): RoleModel!
+  updateRole(id: String!, dto: RoleUpdateDto!): RoleModel!
   deleteRole(id: String!): RoleModel!
 }
 
