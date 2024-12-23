@@ -43,10 +43,7 @@ async function bootstrap() {
       validateCustomDecorators: true,
     }),
   );
-  app.enableCors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  });
+  app.enableCors();
 
   const port = process.env.PORT || 3000;
 
