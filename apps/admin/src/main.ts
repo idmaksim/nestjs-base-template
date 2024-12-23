@@ -34,7 +34,10 @@ async function bootstrap() {
   );
   app.useGlobalInterceptors(new LoggerInterceptor());
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  });
 
   const port = process.env.PORT || 3001;
 
