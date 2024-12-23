@@ -1,4 +1,9 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
@@ -19,13 +24,20 @@ export class AuthService {
     private readonly i18n: I18nService,
   ) {}
 
-  async setTokenCookie(res: Response, token: string) {
-    res.cookie('refreshToken', token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
+  async setTokensCookie(
+    res: Response,
+    tokens: { accessToken: string; refreshToken: string },
+  ) {
+    await Promise.all([
+      this.setTokenCookie(res, {
+        token: tokens.accessToken,
+        name: 'accessToken',
+      }),
+      this.setTokenCookie(res, {
+        token: tokens.refreshToken,
+        name: 'refreshToken',
+      }),
+    ]);
   }
 
   async signUp(dto: SignUpDto) {
@@ -57,7 +69,10 @@ export class AuthService {
     };
   }
 
-  async refresh(refreshToken: string) {
+  async refresh(refreshToken?: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException(this.i18n.t('errors.user.notFound'));
+    }
     const payload = await this.tokenService.verifyRefreshToken(refreshToken);
     const newAccessToken = await this.tokenService.generateAccessToken(
       payload.id,
@@ -67,5 +82,17 @@ export class AuthService {
     );
     this.logger.log(`Пользователь ${payload.id} получил новый access-token`);
     return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+  }
+
+  private async setTokenCookie(
+    res: Response,
+    data: { token: string; name: string },
+  ) {
+    res.cookie(data.name, data.token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
   }
 }
