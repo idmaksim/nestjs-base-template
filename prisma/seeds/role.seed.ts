@@ -1,38 +1,29 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { PermissionEnum } from '../../libs/common/src/constants/permission.enum';
 
 export async function seedRole(prisma: PrismaClient) {
-  await createAdmin(prisma);
-  await createUser(prisma);
+  await createRole(prisma, 'admin', null);
+  await createRole(prisma, 'user', [PermissionEnum.UserGet]);
 }
 
-async function createAdmin(prisma: PrismaClient, role: string = 'admin') {
+async function createRole(
+  prisma: PrismaClient,
+  roleName: string,
+  permissionNames: PermissionEnum[] | null,
+) {
   await prisma.$transaction(async (prisma) => {
     const createdRole = await prisma.role.create({
-      data: { name: role },
+      data: { name: roleName },
     });
-    const permissions = await prisma.permission.findMany();
-    const rolePermissions = permissions.map((permission) => ({
-      roleId: createdRole.id,
-      permissionId: permission.id,
-    }));
-    await prisma.rolePermission.createMany({
-      data: rolePermissions,
-    });
-  });
-}
 
-async function createUser(prisma: PrismaClient) {
-  await prisma.$transaction(async (prisma) => {
-    const createdRole = await prisma.role.create({
-      data: { name: 'user' },
-    });
-    const userPermissions = [PermissionEnum.UserCreate, PermissionEnum.UserGet];
+    const permissionsQuery: Prisma.PermissionWhereInput = permissionNames
+      ? { name: { in: permissionNames } }
+      : {};
+
     const permissions = await prisma.permission.findMany({
-      where: {
-        name: { in: userPermissions },
-      },
+      where: permissionsQuery,
     });
+
     await prisma.rolePermission.createMany({
       data: permissions.map((permission) => ({
         roleId: createdRole.id,
