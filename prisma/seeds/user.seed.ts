@@ -1,4 +1,4 @@
-import { BaseRoleEnum } from '@app/common/constants/base-roles.enum';
+import { BaseRoleEnum } from '../../libs/common/src/constants/base-roles.enum';
 import { PrismaClient } from '@prisma/client';
 
 export const seedUser = async (prisma: PrismaClient) => {

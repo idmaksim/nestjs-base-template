@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@app/common/services/prisma.service';
 import { RoleCreateDto } from './dto/role-create.dto';
 import { RoleUpdateDto } from './dto/role-update.dto';
 import { RoleUpdateOptions } from './interfaces/repository.interfaces';
@@ -7,6 +6,7 @@ import { RoleSearchDto } from './dto/role-search.dto';
 import { getPagination, mapStringToSearch } from '@app/prisma';
 import { mapSortToPrisma } from '@app/prisma/sort.base';
 import { Prisma } from '@prisma/client';
+import { PrismaService } from '@app/prisma/prisma.service';
 
 @Injectable()
 export class RoleRepository {

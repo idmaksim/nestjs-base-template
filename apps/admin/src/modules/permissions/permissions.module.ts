@@ -5,7 +5,6 @@ import {
 } from '@app/permissions';
 import { PermissionsResolver } from './permissions.resolver';
 import { UsersModule } from '@app/users';
-import { PermissionModel } from '@app/permissions/models/permission.model';
 
 @Module({
   imports: [LibPermissionModule, UsersModule, PermissionModule],
